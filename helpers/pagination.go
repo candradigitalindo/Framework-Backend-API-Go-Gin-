@@ -5,12 +5,12 @@ import (
 	"strconv"
 )
 
-func BuildPaginationResponse(
+func BuildPaginationResponse[T any](
 	baseURL string,
 	page, limit int,
 	total int64,
-	data []structs.UserResponse,
-) structs.PaginatedUserResponse {
+	data []T,
+) structs.PaginatedResponse[T] {
 	lastPage := int((total + int64(limit) - 1) / int64(limit))
 	from := (page-1)*limit + 1
 	to := (page-1)*limit + len(data)
@@ -52,7 +52,7 @@ func BuildPaginationResponse(
 		Active: false,
 	})
 
-	return structs.PaginatedUserResponse{
+	return structs.PaginatedResponse[T]{
 		CurrentPage:  page,
 		Data:         data,
 		FirstPageURL: baseURL + "?page=1&limit=" + strconv.Itoa(limit),
